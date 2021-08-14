@@ -1,3 +1,4 @@
 (sym_lib_table
-  (lib (name IOExpander)(type Legacy)(uri "C:/Users/AElder/Desktop/Personal Projects/Test Board/Test Board/Libs/IO Expander/2021-08-13_15-22-06.lib")(options "")(descr ""))
+  (lib (name IOExpander)(type Legacy)(uri "${KIPRJMOD}/Libs/IO Expander/2021-08-13_15-22-06.lib")(options "")(descr ""))
+  (lib (name Test-Board-rescue)(type Legacy)(uri "${KIPRJMOD}/Test Board-rescue.lib")(options "")(descr ""))
 )
