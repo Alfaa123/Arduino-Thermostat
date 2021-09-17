@@ -12,7 +12,7 @@ void setup() {
   pinMode(backlight, OUTPUT);
   digitalWrite(backlight, HIGH);
   lcd.begin(16, 2);
-  bigNum.print(70);
+  bigNum.print(70, 2, 11, ' ');
 }
 
 // the loop function runs over and over again forever
