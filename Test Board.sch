@@ -152,7 +152,7 @@ F 3 "~" H 1650 5350 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 $Comp
-L MCU_Module:Arduino_Nano_v3.x A1
+L Test-Board-rescue:Arduino_Nano_v3.x-MCU_Module A1
 U 1 1 6118DE62
 P 10200 1800
 F 0 "A1" H 10200 711 50  0000 C CNN
