@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name IOExpander)(type KiCad)(uri "${KIPRJMOD}/Libs/IO Expander/footprints.pretty")(options "")(descr ""))
+)
