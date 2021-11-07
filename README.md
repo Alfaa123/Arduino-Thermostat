@@ -1,6 +1,8 @@
 # Arduino-Thermostat
 
-This is a project to create a arduino powered home thermostat. Currently the project is in the electrical design stage. Version 1 PCB schematic and design is complete.
+![Finished V1](pics/Working.jpg)
+
+This is a project to create a arduino powered home thermostat. Version 1 PCB schematic and design is complete. Basic firmware is complete and V1 is currently controlling the temperature in my apartment.
 
 # Electrical Design
 
@@ -35,4 +37,27 @@ The DHT11 may be swapped out with a DHT22 as they have the same footprint and th
 ## Physical Outline
 
 The physical outline of the board was designed to mimic my current thermostat. 4 mounting holes were provided to allow for either wall mounting or a case.
+
+## Lessons Learned for V2
+
+- Arduino placement needs to be revised. Currently plugging in the USB cable is impossible without bending a cable and potentally damaging the Arduino. This is the biggest mistake.
+- Screw terminal placement needs to be revised. Currently with the massive spacing, it required me to trim a lot of the insulation off of the 5 conductor cable in order to spread the wires out far enough to reach.
+- More markings on the front of the PCB to show which screw terminal does what. Currently it requires me to open the schematic and board files to correctly wire the thermostat.
+- More work should be done to minimize footprint. Currently, the thermostat is physically very large.
+- A larger screen would be nice to fit more information. A dot matrix or OLED would be best.
+- Smaller regulator section and relays would go a long way to making the board shrink.
+
+# Programming
+
+Currently a basic bare bones firmware has been written to allow basic functionality. No scheduling features exist and functionality is limited to only basic temperature control.
+
+## Planned Future Development
+
+- Backlight timeout. Currently the LCD stays on all the time.
+- PID control or other method for better temperature control.
+- Humidistat control mode
+- Adjustable circ fan frequency
+- Better menu system
+- Filtering on the temperature sensor to prevent rapid cycling
+- Cycling time limit to prevent compressor damage
 
