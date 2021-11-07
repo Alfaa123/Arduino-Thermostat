@@ -5,6 +5,19 @@
 #define LEFT_PIN 8
 #define RIGHT_PIN 9
 
+#define MAX_MENU_ITEMS 3
+
+#define FAN 3
+#define HEAT 4
+#define COOL 5
+
+#define HEATING 2
+#define COOLING 1
+
+#define CIRC_INTERVAL 1200000
+
+#define TEMP_HYSTERESIS 1
+
 #include <AceButton.h>
 using namespace ace_button;
 #include <LiquidCrystal.h>
@@ -21,29 +34,34 @@ AceButton buttonRight(RIGHT_PIN);
 
 int humidity, temperature;
 int setpoint = 75;
+bool tempAdjustment = 0;
+bool circFanInterval = 0;
 char mode = 0;
 char fan = 0;
 char menu = 0;
-long double oldMillis;
+long double updateLCDOldMillis;
+long double circFanOldMillis;
 
 LiquidCrystal lcd(A1, A0, A5, A4, A3, A2);
 DHT dht(2, DHT22);
 BigNums2x2 bigNum(TREK);
 // the setup function runs once when you press reset or power the board
 void setup() {
-  pinMode(6, INPUT);
-  pinMode(7, INPUT);
-  pinMode(8, INPUT);
-  pinMode(9, INPUT);
+  pinMode(UP_PIN, INPUT);
+  pinMode(DOWN_PIN, INPUT);
+  pinMode(LEFT_PIN, INPUT);
+  pinMode(RIGHT_PIN, INPUT);
+
+  pinMode(FAN, OUTPUT);
+  pinMode(HEAT, OUTPUT);
+  pinMode(COOL, OUTPUT);
 
   ButtonConfig* buttonConfig = ButtonConfig::getSystemButtonConfig();
   buttonConfig->setEventHandler(handleButtonEvent);
   buttonConfig->setFeature(ButtonConfig::kFeatureClick);
-  //buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
-  //buttonConfig->setFeature(ButtonConfig::kFeatureLongPress);
-  //buttonConfig->setFeature(ButtonConfig::kFeatureRepeatPress);
 
-  Serial.begin(9600);
+
+  //Serial.begin(9600);
   pinMode(backlight_pin, OUTPUT);
   lcd.begin(16, 2);
   dht.begin();
@@ -56,11 +74,13 @@ void loop() {
   buttonDown.check();
   buttonLeft.check();
   buttonRight.check();
-  if (millis() - oldMillis > 2000) {
+  if (millis() - updateLCDOldMillis > 10000) {
     updateDHT();
     printTemp();
     printMenu(menu);
-    oldMillis = millis();
+    updateTempControl();
+    updateFanControl();
+    updateLCDOldMillis = millis();
   }
 }
 
@@ -90,11 +110,12 @@ void printMenu(char menuNum) {
   lcd.setCursor(0, 0);
   printMenuItem(menuNum);
   lcd.setCursor(0, 1);
-  if (menuNum < 5) {
+  if (menuNum < MAX_MENU_ITEMS) {
     printMenuItem(menuNum + 1);
   }
   else {
-    printMenuItem(0);
+    lcd.print("         ");
+    //printMenuItem(0);
   }
 }
 
@@ -108,17 +129,18 @@ void printMenuItem(char itemNum) {
     case 1:
       lcd.print("Setpt:");
       lcd.print(setpoint);
+      lcd.print(" ");
       break;
     case 2:
       lcd.print("Mode:");
       switch (mode) {
         case 0:
-          lcd.print("OFF");
+          lcd.print("OFF ");
           break;
-        case 1:
+        case COOLING:
           lcd.print("COOL");
           break;
-        case 2:
+        case HEATING:
           lcd.print("HEAT");
           break;
       }
@@ -127,17 +149,74 @@ void printMenuItem(char itemNum) {
       lcd.print("Fan:");
       switch (fan) {
         case 0:
-          lcd.print("AUTO");
+          lcd.print("AUTO ");
           break;
         case 1:
-          lcd.print("ON");
+          lcd.print("ON   ");
           break;
         case 2:
-          lcd.print("CIRC");
+          lcd.print("CIRC ");
           break;
       }
       break;
   }
+}
+
+void updateTempControl() {
+  switch (mode) {
+    case 0:
+      digitalWrite(HEAT, LOW);
+      digitalWrite(COOL, LOW);
+      tempAdjustment = 0;
+      break;
+    case COOLING:
+      if (setpoint < temperature - TEMP_HYSTERESIS) {
+        tempAdjustment = 1;
+        digitalWrite(COOL, HIGH);
+      }
+      else if (setpoint > temperature + TEMP_HYSTERESIS) {
+        tempAdjustment = 0;
+        digitalWrite(COOL, LOW);
+      }
+      break;
+    case HEATING:
+      if (setpoint > temperature + TEMP_HYSTERESIS) {
+        tempAdjustment = 1;
+        digitalWrite(HEAT, HIGH);
+      }
+      else if (setpoint < temperature - TEMP_HYSTERESIS) {
+        tempAdjustment = 0;
+        digitalWrite(HEAT, LOW);
+      }
+      break;
+  }
+}
+
+void updateFanControl() {
+  switch (fan) {
+      if (tempAdjustment) {
+        digitalWrite(FAN, HIGH);
+      }
+      else {
+      case 0:
+        digitalWrite(FAN, LOW);
+        circFanInterval = 0;
+        break;
+      case 1:
+        digitalWrite(FAN, HIGH);
+        circFanInterval = 0;
+        break;
+      case 2:
+        if (millis() - circFanOldMillis > CIRC_INTERVAL) {
+          circFanInterval = !circFanInterval;
+        }
+        digitalWrite(FAN, circFanInterval);
+        circFanOldMillis = millis();
+        break;
+      }
+  }
+
+
 }
 
 void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
@@ -161,14 +240,68 @@ void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState
     case AceButton::kEventClicked:
       switch (button->getPin()) {
         case UP_PIN:
-        menu = menu - 1;
+          menu = menu - 1;
+          if (menu < 0) {
+            menu = 0;
+          }
+          printMenu(menu);
           break;
         case DOWN_PIN:
-        menu++;
+          menu++;
+          if (menu > MAX_MENU_ITEMS) {
+            menu = MAX_MENU_ITEMS;
+          }
+          printMenu(menu);
           break;
         case LEFT_PIN:
+          switch (menu) {
+            case 0:
+              break;
+            case 1:
+              setpoint--;
+              if (setpoint < 50) {
+                setpoint = 50;
+              }
+              break;
+            case 2:
+              mode--;
+              if (mode < 0) {
+                mode = 0;
+              }
+              break;
+            case 3:
+              fan--;
+              if (fan < 0) {
+                fan = 0;
+              }
+              break;
+          }
+          printMenu(menu);
           break;
         case RIGHT_PIN:
+          switch (menu) {
+            case 0:
+              break;
+            case 1:
+              setpoint++;
+              if (setpoint > 90) {
+                setpoint = 90;
+              }
+              break;
+            case 2:
+              mode++;
+              if (mode > 2) {
+                mode = 2;
+              }
+              break;
+            case 3:
+              fan++;
+              if (fan > 2) {
+                fan = 2;
+              }
+              break;
+          }
+          printMenu(menu);
           break;
 
 
