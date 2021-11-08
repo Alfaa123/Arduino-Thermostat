@@ -138,7 +138,7 @@ void printMenu(char menuNum) {
     printMenuItem(menuNum + 1);
   }
   else {
-    lcd.print("         ");
+    lcd.print("Ver. 0.8 ");
     //printMenuItem(0);
   }
 }
