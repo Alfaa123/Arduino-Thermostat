@@ -103,7 +103,7 @@ else {backlight(1);}
 
 void backlight(bool direction) {
   if (backlightStatus ^ direction){
-  for (int x = 0; x < 255; x++) {
+  for (int x = 0; x < 240; x++) {
     delay(2);
     if (direction) {
       backlightStatus = 1;
