@@ -16,6 +16,8 @@
 
 #define CIRC_INTERVAL 1200000
 
+#define LCD_TIMEOUT 10000
+
 #define TEMP_HYSTERESIS 1
 
 #include <AceButton.h>
@@ -32,15 +34,20 @@ AceButton buttonDown(DOWN_PIN);
 AceButton buttonLeft(LEFT_PIN);
 AceButton buttonRight(RIGHT_PIN);
 
-int humidity, temperature;
+int humidity;
+int temperatureArray[3];
+int temperature;
+char tempIndex = 0;
 int setpoint = 75;
 bool tempAdjustment = 0;
 bool circFanInterval = 0;
+bool backlightStatus = 0;
 char mode = 0;
 char fan = 0;
 char menu = 0;
 long double updateLCDOldMillis;
 long double circFanOldMillis;
+long double LCDTimeoutOldMillis;
 
 LiquidCrystal lcd(A1, A0, A5, A4, A3, A2);
 DHT dht(2, DHT22);
@@ -65,7 +72,11 @@ void setup() {
   pinMode(backlight_pin, OUTPUT);
   lcd.begin(16, 2);
   dht.begin();
+  for (int x=0;x<3;x++){
+  temperatureArray[x] = dht.readTemperature(true);
+  }
   backlight(1);
+  LCDTimeoutOldMillis = millis();
 }
 
 // the loop function runs over and over again forever
@@ -74,6 +85,12 @@ void loop() {
   buttonDown.check();
   buttonLeft.check();
   buttonRight.check();
+
+if  (millis() - LCDTimeoutOldMillis > LCD_TIMEOUT){
+  backlight(0);
+}
+else {backlight(1);}
+  
   if (millis() - updateLCDOldMillis > 10000) {
     updateDHT();
     printTemp();
@@ -85,14 +102,18 @@ void loop() {
 }
 
 void backlight(bool direction) {
+  if (backlightStatus ^ direction){
   for (int x = 0; x < 255; x++) {
     delay(2);
     if (direction) {
+      backlightStatus = 1;
       analogWrite(10, x);
     }
     else {
+      backlightStatus = 0;
       analogWrite(10, 255 - x);
     }
+  }
   }
 
 }
@@ -102,7 +123,10 @@ void printTemp() {
 }
 
 void updateDHT() {
-  temperature = dht.readTemperature(true);
+  temperatureArray[tempIndex] = dht.readTemperature(true);
+  tempIndex++;
+  if (tempIndex > 2){tempIndex = 0;}
+  temperature = ((temperatureArray[0] + temperatureArray[1] + temperatureArray[2])/3);
   humidity = dht.readHumidity();
 }
 
@@ -209,9 +233,9 @@ void updateFanControl() {
       case 2:
         if (millis() - circFanOldMillis > CIRC_INTERVAL) {
           circFanInterval = !circFanInterval;
+          circFanOldMillis = millis();
         }
         digitalWrite(FAN, circFanInterval);
-        circFanOldMillis = millis();
         break;
       }
   }
@@ -221,17 +245,8 @@ void updateFanControl() {
 
 void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 
-  // Print out a message for all events, for both buttons.
-  //Serial.print(F("handleEvent(): pin: "));
-  //Serial.print(button->getPin());
-  //Serial.print(F("; eventType: "));
-  //Serial.print(eventType);
-  //Serial.print(F("; buttonState: "));
-  //Serial.println(buttonState);
+LCDTimeoutOldMillis = millis();
 
-  // Control the LED only for the Pressed and Released events of Button 1.
-  // Notice that if the MCU is rebooted while the button is pressed down, no
-  // event is triggered and the LED remains off.
   switch (eventType) {
     case AceButton::kEventPressed:
       break;

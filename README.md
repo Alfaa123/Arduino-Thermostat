@@ -51,6 +51,13 @@ The physical outline of the board was designed to mimic my current thermostat. 4
 
 Currently a basic bare bones firmware has been written to allow basic functionality. No scheduling features exist and functionality is limited to only basic temperature control.
 
+## Required Libraries
+
+- AceButton
+- LiquidCrystal
+- BigNums2x2
+- DHT
+
 ## Planned Future Development
 
 - Backlight timeout. Currently the LCD stays on all the time.
