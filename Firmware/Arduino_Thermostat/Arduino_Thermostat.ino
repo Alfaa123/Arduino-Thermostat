@@ -88,6 +88,7 @@ void loop() {
 
 if  (millis() - LCDTimeoutOldMillis > LCD_TIMEOUT){
   backlight(0);
+  menu = 0;
 }
 else {backlight(1);}
   
@@ -103,7 +104,7 @@ else {backlight(1);}
 
 void backlight(bool direction) {
   if (backlightStatus ^ direction){
-  for (int x = 0; x < 240; x++) {
+  for (int x = 0; x < 255; x++) {
     delay(2);
     if (direction) {
       backlightStatus = 1;
@@ -111,7 +112,7 @@ void backlight(bool direction) {
     }
     else {
       backlightStatus = 0;
-      analogWrite(10, 255 - x);
+      analogWrite(10, 260 - x);
     }
   }
   }
@@ -152,7 +153,11 @@ void printMenuItem(char itemNum) {
       break;
     case 1:
       lcd.print("Setpt:");
-      lcd.print(setpoint);
+      if (mode == 0){lcd.print("OFF");}
+      else if (mode == COOLING){lcd.print("C");
+      lcd.print(setpoint);}
+      else if (mode == HEATING){lcd.print("H");
+      lcd.print(setpoint);}
       lcd.print(" ");
       break;
     case 2:
