@@ -40,8 +40,8 @@ L Device:D_Schottky D2
 U 1 1 6116B3C0
 P 2850 1550
 F 0 "D2" V 2804 1630 50  0000 L CNN
-F 1 "SB5199TA" V 2895 1630 50  0000 L CNN
-F 2 "Diode_THT:D_DO-201_P15.24mm_Horizontal" H 2850 1550 50  0001 C CNN
+F 1 "31DQ05TA" V 2895 1630 50  0000 L CNN
+F 2 "Diode_THT:D_DO-201AD_P5.08mm_Vertical_AnodeUp" H 2850 1550 50  0001 C CNN
 F 3 "~" H 2850 1550 50  0001 C CNN
 	1    2850 1550
 	0    1    1    0   
@@ -51,7 +51,7 @@ L Device:L L1
 U 1 1 6116C55B
 P 3200 1400
 F 0 "L1" V 3390 1400 50  0000 C CNN
-F 1 "53uH" V 3299 1400 50  0000 C CNN
+F 1 "100uH" V 3299 1400 50  0000 C CNN
 F 2 "Inductor_THT:L_Toroid_Vertical_L21.6mm_W11.4mm_P7.62mm_Pulse_KM-3" H 3200 1400 50  0001 C CNN
 F 3 "~" H 3200 1400 50  0001 C CNN
 	1    3200 1400
@@ -150,17 +150,6 @@ F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Ho
 F 3 "~" H 1650 5350 50  0001 C CNN
 	1    1650 5350
 	-1   0    0    -1  
-$EndComp
-$Comp
-L MCU_Module:Arduino_Nano_v3.x A1
-U 1 1 6118DE62
-P 10200 1800
-F 0 "A1" H 10200 711 50  0000 C CNN
-F 1 "Arduino_Nano_v3.x" H 10200 620 50  0000 C CNN
-F 2 "Module:Arduino_Nano" H 10200 1800 50  0001 C CIN
-F 3 "http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf" H 10200 1800 50  0001 C CNN
-	1    10200 1800
-	1    0    0    -1  
 $EndComp
 $Comp
 L power:+5V #PWR0106
@@ -313,11 +302,6 @@ Wire Wire Line
 Connection ~ 10200 4250
 Wire Wire Line
 	10200 4400 10350 4400
-Wire Wire Line
-	10300 2800 10200 2800
-Wire Wire Line
-	10200 2800 9800 2800
-Connection ~ 10200 2800
 $Comp
 L power:GND #PWR0120
 U 1 1 611C69A1
@@ -658,7 +642,7 @@ L Device:R R23
 U 1 1 61233155
 P 5100 2300
 F 0 "R23" H 5170 2346 50  0000 L CNN
-F 1 "220R" H 5170 2255 50  0000 L CNN
+F 1 "600R" H 5170 2255 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 5030 2300 50  0001 C CNN
 F 3 "~" H 5100 2300 50  0001 C CNN
 	1    5100 2300
@@ -881,89 +865,41 @@ F 3 "~" H 7700 1900 50  0001 C CNN
 	1    7700 1900
 	0    -1   -1   0   
 $EndComp
-$Comp
-L Relay:FINDER-32.21-x300 K1
-U 1 1 612C8E7E
-P 3800 4300
-F 0 "K1" H 4230 4346 50  0000 L CNN
-F 1 "FINDER-32.21-x300" H 4230 4255 50  0000 L CNN
-F 2 "Relay_THT:Relay_SPST_Finder_32.21-x300" H 5070 4270 50  0001 C CNN
-F 3 "http://gfinder.findernet.com/assets/Series/355/S32EN.pdf" H 3800 4300 50  0001 C CNN
-	1    3800 4300
-	1    0    0    -1  
-$EndComp
-$Comp
-L Relay:FINDER-32.21-x300 K3
-U 1 1 612D0CAA
-P 3800 6300
-F 0 "K3" H 4230 6346 50  0000 L CNN
-F 1 "FINDER-32.21-x300" H 4230 6255 50  0000 L CNN
-F 2 "Relay_THT:Relay_SPST_Finder_32.21-x300" H 5070 6270 50  0001 C CNN
-F 3 "http://gfinder.findernet.com/assets/Series/355/S32EN.pdf" H 3800 6300 50  0001 C CNN
-	1    3800 6300
-	1    0    0    -1  
-$EndComp
-$Comp
-L Relay:FINDER-32.21-x300 K2
-U 1 1 612D5FFC
-P 3800 5300
-F 0 "K2" H 4230 5346 50  0000 L CNN
-F 1 "FINDER-32.21-x300" H 4230 5255 50  0000 L CNN
-F 2 "Relay_THT:Relay_SPST_Finder_32.21-x300" H 5070 5270 50  0001 C CNN
-F 3 "http://gfinder.findernet.com/assets/Series/355/S32EN.pdf" H 3800 5300 50  0001 C CNN
-	1    3800 5300
-	1    0    0    -1  
-$EndComp
-Text Label 4250 4000 0    50   ~ 0
+Text Label 4300 4750 0    50   ~ 0
 R
-Text Label 4250 5000 0    50   ~ 0
-R
-Text Label 4250 6000 0    50   ~ 0
+Text Label 4300 6100 0    50   ~ 0
 R
 Wire Wire Line
-	4100 6000 4250 6000
+	4150 6100 4300 6100
 Wire Wire Line
-	4100 5000 4250 5000
-Wire Wire Line
-	4100 4000 4250 4000
+	4150 4750 4300 4750
 $Comp
 L power:GND #PWR03
 U 1 1 6132FB03
-P 3600 6600
-F 0 "#PWR03" H 3600 6350 50  0001 C CNN
-F 1 "GND" H 3605 6427 50  0000 C CNN
-F 2 "" H 3600 6600 50  0001 C CNN
-F 3 "" H 3600 6600 50  0001 C CNN
-	1    3600 6600
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR02
-U 1 1 613309E2
-P 3600 5600
-F 0 "#PWR02" H 3600 5350 50  0001 C CNN
-F 1 "GND" H 3605 5427 50  0000 C CNN
-F 2 "" H 3600 5600 50  0001 C CNN
-F 3 "" H 3600 5600 50  0001 C CNN
-	1    3600 5600
+P 3800 7100
+F 0 "#PWR03" H 3800 6850 50  0001 C CNN
+F 1 "GND" H 3805 6927 50  0000 C CNN
+F 2 "" H 3800 7100 50  0001 C CNN
+F 3 "" H 3800 7100 50  0001 C CNN
+	1    3800 7100
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR01
 U 1 1 61331D39
-P 3600 4600
-F 0 "#PWR01" H 3600 4350 50  0001 C CNN
-F 1 "GND" H 3605 4427 50  0000 C CNN
-F 2 "" H 3600 4600 50  0001 C CNN
-F 3 "" H 3600 4600 50  0001 C CNN
-	1    3600 4600
+P 3800 4400
+F 0 "#PWR01" H 3800 4150 50  0001 C CNN
+F 1 "GND" H 3805 4227 50  0000 C CNN
+F 2 "" H 3800 4400 50  0001 C CNN
+F 3 "" H 3800 4400 50  0001 C CNN
+	1    3800 4400
 	1    0    0    -1  
 $EndComp
-Text Label 3900 4000 2    50   ~ 0
+Text Label 3500 3400 0    50   ~ 0
 FANRLY
-Text Label 3900 5000 2    50   ~ 0
+Text Label 3500 4750 0    50   ~ 0
 HEATRLY
-Text Label 3900 6000 2    50   ~ 0
+Text Label 3500 6100 0    50   ~ 0
 COOLRLY
 Text Label 7450 5000 2    50   ~ 0
 COOLRLY
@@ -978,23 +914,17 @@ Wire Wire Line
 Wire Wire Line
 	7050 4400 7450 4400
 Wire Wire Line
-	3600 4000 3900 4000
+	3800 3400 3500 3400
 Wire Wire Line
-	3600 5000 3900 5000
+	3800 4750 3500 4750
 Wire Wire Line
-	3600 6000 3900 6000
-Text Label 4000 6700 0    50   ~ 0
+	3800 6100 3500 6100
+Text Label 4050 7200 0    50   ~ 0
 Y
 Wire Wire Line
-	4000 6600 4000 6700
-Wire Wire Line
-	4000 5700 4000 5600
-Text Label 4000 5700 0    50   ~ 0
-W
-Text Label 4000 4700 0    50   ~ 0
+	4050 7100 4050 7200
+Text Label 4050 4500 0    50   ~ 0
 G
-Wire Wire Line
-	4000 4600 4000 4700
 $Comp
 L Connector:Screw_Terminal_01x02 J2
 U 1 1 6137F858
@@ -1051,4 +981,74 @@ F 3 "~" H 1950 3100 50  0001 C CNN
 	1    1950 3100
 	0    -1   -1   0   
 $EndComp
+$Comp
+L Arduino-Thermostat:DS1E-M-DC5V U3
+U 1 1 61909F87
+P 3500 5600
+F 0 "U3" V 5253 4852 60  0000 R CNN
+F 1 "DS1E-M-DC5V" V 5147 4852 60  0000 R CNN
+F 2 "Arduino-Thermostat:DS1E-M-DC5V" H 5200 5640 60  0001 C CNN
+F 3 "" H 4700 5300 60  0000 C CNN
+	1    3500 5600
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4050 4400 4050 4500
+Wire Wire Line
+	4150 3400 4300 3400
+Text Label 4300 3400 0    50   ~ 0
+R
+$Comp
+L Arduino-Thermostat:DS1E-M-DC5V U5
+U 1 1 619468A4
+P 3500 8300
+F 0 "U5" V 5253 7552 60  0000 R CNN
+F 1 "DS1E-M-DC5V" V 5147 7552 60  0000 R CNN
+F 2 "Arduino-Thermostat:DS1E-M-DC5V" H 5200 8340 60  0001 C CNN
+F 3 "" H 4700 8000 60  0000 C CNN
+	1    3500 8300
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Arduino-Thermostat:DS1E-M-DC5V U4
+U 1 1 6192B6E5
+P 3500 6950
+F 0 "U4" V 5253 6202 60  0000 R CNN
+F 1 "DS1E-M-DC5V" V 5147 6202 60  0000 R CNN
+F 2 "Arduino-Thermostat:DS1E-M-DC5V" H 5200 6990 60  0001 C CNN
+F 3 "" H 4700 6650 60  0000 C CNN
+	1    3500 6950
+	0    -1   -1   0   
+$EndComp
+Text Label 4050 5850 0    50   ~ 0
+W
+Wire Wire Line
+	4050 5850 4050 5750
+$Comp
+L power:GND #PWR02
+U 1 1 613309E2
+P 3800 5750
+F 0 "#PWR02" H 3800 5500 50  0001 C CNN
+F 1 "GND" H 3805 5577 50  0000 C CNN
+F 2 "" H 3800 5750 50  0001 C CNN
+F 3 "" H 3800 5750 50  0001 C CNN
+	1    3800 5750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9800 2800 10200 2800
+$Comp
+L MCU_Module:Arduino_Nano_v3.x A1
+U 1 1 61970FE6
+P 10200 1800
+F 0 "A1" H 10200 711 50  0000 C CNN
+F 1 "Arduino_Nano_v3.x" H 10200 620 50  0000 C CNN
+F 2 "Module:Arduino_Nano" H 10200 1800 50  0001 C CIN
+F 3 "http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf" H 10200 1800 50  0001 C CNN
+	1    10200 1800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10200 2800 10300 2800
+Connection ~ 10200 2800
 $EndSCHEMATC

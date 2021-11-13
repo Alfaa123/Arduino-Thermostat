@@ -1,3 +1,3 @@
 (fp_lib_table
-  (lib (name IOExpander)(type KiCad)(uri "${KIPRJMOD}/Libs/IO Expander/footprints.pretty")(options "")(descr ""))
+  (lib (name Arduino-Thermostat)(type KiCad)(uri R:/Arduino-Thermostat/Board/Libs/Footprints/DS1E-M-DC5V.pretty)(options "")(descr ""))
 )
