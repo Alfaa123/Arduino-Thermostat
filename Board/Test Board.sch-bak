@@ -51,8 +51,8 @@ L Device:L L1
 U 1 1 6116C55B
 P 3200 1400
 F 0 "L1" V 3390 1400 50  0000 C CNN
-F 1 "100uH" V 3299 1400 50  0000 C CNN
-F 2 "Inductor_THT:L_Toroid_Vertical_L21.6mm_W11.4mm_P7.62mm_Pulse_KM-3" H 3200 1400 50  0001 C CNN
+F 1 "53uH" V 3299 1400 50  0000 C CNN
+F 2 "Inductor_THT:L_Radial_D12.0mm_P5.00mm_Fastron_11P" H 3200 1400 50  0001 C CNN
 F 3 "~" H 3200 1400 50  0001 C CNN
 	1    3200 1400
 	0    -1   -1   0   
@@ -240,7 +240,7 @@ U 1 1 611B2F78
 P 10200 3750
 F 0 "U6" V 9819 3750 50  0000 C CNN
 F 1 "DHT11" V 9910 3750 50  0000 C CNN
-F 2 "Sensor:Aosong_DHT11_5.5x12.0_P2.54mm" H 10200 3350 50  0001 C CNN
+F 2 "Arduino-Thermostat:DHT22-Horizontal" H 10200 3350 50  0001 C CNN
 F 3 "http://akizukidenshi.com/download/ds/aosong/DHT11.pdf" H 10350 4000 50  0001 C CNN
 	1    10200 3750
 	0    1    1    0   
