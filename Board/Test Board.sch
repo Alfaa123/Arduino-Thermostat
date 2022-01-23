@@ -703,4 +703,15 @@ Connection ~ 10200 2800
 NoConn ~ 3900 3400
 NoConn ~ 3900 4750
 NoConn ~ 3900 6100
+$Comp
+L Arduino-Thermostat:Adafruit-Eink-Display U?
+U 1 1 61ED981D
+P 7750 1050
+F 0 "U?" H 7750 1175 50  0000 C CNN
+F 1 "Adafruit-Eink-Display" H 7750 1084 50  0000 C CNN
+F 2 "" H 7750 1050 50  0001 C CNN
+F 3 "" H 7750 1050 50  0001 C CNN
+	1    7750 1050
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
