@@ -1,3 +1,4 @@
 (sym_lib_table
-  (lib (name Arduino-Thermostat)(type Legacy)(uri R:/Arduino-Thermostat/Board/Libs/Symbols/DS1E-M-DC5V.lib)(options "")(descr ""))
+  (lib (name "Arduino-Thermostat")(type "Legacy")(uri "R:/Arduino-Thermostat/Board/Libs/Symbols/DS1E-M-DC5V.lib")(options "")(descr ""))
+  (lib (name "Test-Board-rescue")(type "Legacy")(uri "${KIPRJMOD}/Test Board-rescue.lib")(options "")(descr ""))
 )
