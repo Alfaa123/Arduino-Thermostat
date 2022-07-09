@@ -18,6 +18,8 @@
 
 #define LCD_TIMEOUT 10000
 
+#define THERMOSTAT_UPDATE_RATE 5000
+
 #define TEMP_HYSTERESIS 1
 
 #include <AceButton.h>
@@ -35,7 +37,7 @@ AceButton buttonLeft(LEFT_PIN);
 AceButton buttonRight(RIGHT_PIN);
 
 int humidity;
-int temperatureArray[3];
+float temperatureArray[10];
 int temperature;
 char tempIndex = 0;
 int setpoint = 75;
@@ -48,6 +50,7 @@ char menu = 0;
 long double updateLCDOldMillis;
 long double circFanOldMillis;
 long double LCDTimeoutOldMillis;
+long double thermostatControlOldMillis;
 
 LiquidCrystal lcd(A1, A0, A5, A4, A3, A2);
 DHT dht(2, DHT22);
@@ -72,8 +75,8 @@ void setup() {
   pinMode(backlight_pin, OUTPUT);
   lcd.begin(16, 2);
   dht.begin();
-  for (int x=0;x<3;x++){
-  temperatureArray[x] = dht.readTemperature(true);
+  for (int x = 0; x < 3; x++) {
+    temperatureArray[x] = dht.readTemperature(true);
   }
   backlight(1);
   LCDTimeoutOldMillis = millis();
@@ -86,35 +89,40 @@ void loop() {
   buttonLeft.check();
   buttonRight.check();
 
-if  (millis() - LCDTimeoutOldMillis > LCD_TIMEOUT){
-  backlight(0);
-  menu = 0;
-}
-else {backlight(1);}
-  
-  if (millis() - updateLCDOldMillis > 10000) {
+  if  (millis() - LCDTimeoutOldMillis > LCD_TIMEOUT) {
+    backlight(0);
+    menu = 0;
+  }
+  else {
+    backlight(1);
+  }
+
+  if (millis() - updateLCDOldMillis > THERMOSTAT_UPDATE_RATE) {
     updateDHT();
     printTemp();
     printMenu(menu);
+    updateLCDOldMillis = millis();
+  }
+  if (millis() - thermostatControlOldMillis > 10000){
     updateTempControl();
     updateFanControl();
-    updateLCDOldMillis = millis();
+    thermostatControlOldMillis = millis();
   }
 }
 
 void backlight(bool direction) {
-  if (backlightStatus ^ direction){
-  for (int x = 0; x < 255; x++) {
-    delay(2);
-    if (direction) {
-      backlightStatus = 1;
-      analogWrite(10, x);
+  if (backlightStatus ^ direction) {
+    for (int x = 0; x < 255; x++) {
+      delay(1);
+      if (direction) {
+        backlightStatus = 1;
+        analogWrite(10, x);
+      }
+      else {
+        backlightStatus = 0;
+        analogWrite(10, 258 - x);
+      }
     }
-    else {
-      backlightStatus = 0;
-      analogWrite(10, 260 - x);
-    }
-  }
   }
 
 }
@@ -126,8 +134,10 @@ void printTemp() {
 void updateDHT() {
   temperatureArray[tempIndex] = dht.readTemperature(true);
   tempIndex++;
-  if (tempIndex > 2){tempIndex = 0;}
-  temperature = ((temperatureArray[0] + temperatureArray[1] + temperatureArray[2])/3);
+  if (tempIndex > 9) {
+    tempIndex = 0;
+  }
+  temperature = (averageArray(temperatureArray, 10));
   humidity = dht.readHumidity();
 }
 
@@ -153,11 +163,17 @@ void printMenuItem(char itemNum) {
       break;
     case 1:
       lcd.print("Setpt:");
-      if (mode == 0){lcd.print("OFF");}
-      else if (mode == COOLING){lcd.print("C");
-      lcd.print(setpoint);}
-      else if (mode == HEATING){lcd.print("H");
-      lcd.print(setpoint);}
+      if (mode == 0) {
+        lcd.print("OFF");
+      }
+      else if (mode == COOLING) {
+        lcd.print("C");
+        lcd.print(setpoint);
+      }
+      else if (mode == HEATING) {
+        lcd.print("H");
+        lcd.print(setpoint);
+      }
       lcd.print(" ");
       break;
     case 2:
@@ -188,6 +204,19 @@ void printMenuItem(char itemNum) {
           break;
       }
       break;
+    case 4:
+      lcd.print(FTOut: );
+      switch (timeout) {
+        case 0:
+          lcd.print("30 M  ");
+          break;
+        case 1:
+          lcd.print("1 H   ");
+          break;
+        case 2:
+          lcd.print("2 H   ");
+          break;
+      }
   }
 }
 
@@ -248,9 +277,20 @@ void updateFanControl() {
 
 }
 
+int averageArray(float inputArray[], int arraySize) {
+  float sum = 0;
+  float average = 0;
+  for (int i = 0; i < arraySize; i++) {
+    sum += inputArray[i];
+  }
+  average = sum / arraySize;
+  return average;
+}
+
 void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 
-LCDTimeoutOldMillis = millis();
+  LCDTimeoutOldMillis = millis();
+  thermostatControlOldMillis = millis();
 
   switch (eventType) {
     case AceButton::kEventPressed:
