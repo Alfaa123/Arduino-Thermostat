@@ -49,11 +49,6 @@ No V2 programming has been written yet.
 
 ## Required Libraries
 
-~~ - AceButton
-- LiquidCrystal
-- BigNums2x2
-- DHT~~
-
 TBD once V2 programming is underway
 
 ## Planned Future Development
